@@ -127,6 +127,7 @@ def execute_train(params):
 
     files_path = params['file_paths']
     root_path = files_path['root_path']
+    program_path = root_path + files_path['program_path']
     project_path = root_path + files_path['projects_path'] + params['project_name']
     train_images = project_path + files_path['train_images']
     train_targets = project_path + files_path['train_targets']
@@ -139,6 +140,8 @@ def execute_train(params):
     number_workers = str(training_parameters['number_workers'])
     number_of_predicted_particles = str(training_parameters['number_of_predicted_particles'])
     
+  
+    # command = "python3 " + program_path + 'train.py' \
     command = "topaz train" \
     + " -n " + number_of_predicted_particles \
     + " --num-workers=" + number_workers \
@@ -233,9 +236,9 @@ def main(config_file):
     # TODO fix path
     # Read JSON file
     # macbook 
-    params = read_json_file('/Users/philsmoot/Repos/topaz_wrapper/scripts/' + config_file)
+    # params = read_json_file('/Users/philsmoot/Repos/topaz_wrapper/scripts/' + config_file)
     # bruno 
-    # params = read_json_file('/hpc/projects/group.czii/phil.smoot/topaz_wrapper/scripts/' + config_file)
+    params = read_json_file('/hpc/projects/group.czii/phil.smoot/topaz_wrapper/scripts/' + config_file)
 
     if params == None:
         exit(1)

@@ -78,7 +78,7 @@ def main(root_path, dataset_path, predicted_particles_file_path, processed_parti
         c = Circle((x,y),radius,fill=False,color='b')
         ax.add_patch(c)
     plt.xlabel(name + " predicted==blue;")
-    plt.savefig(dataset_path + '/topaz/' + name + "_predicted.png")
+    plt.savefig(dataset_path + "/" + name + "_predicted.png")
     plt.show()
 
     #   
@@ -93,7 +93,7 @@ def main(root_path, dataset_path, predicted_particles_file_path, processed_parti
         c = Circle((x,y),radius,fill=False,color='r')
         ax.add_patch(c)
     plt.xlabel(name + " ground_truth==red")
-    plt.savefig(dataset_path + '/topaz/' + name + "_ground_truth.png")
+    plt.savefig(dataset_path + "/" + name + "_ground_truth.png")
     plt.show()
 
     #
@@ -116,7 +116,7 @@ def main(root_path, dataset_path, predicted_particles_file_path, processed_parti
         ax.add_patch(c)
 
     plt.xlabel(name + " predicted==blue; ground_truth==red")
-    plt.savefig(dataset_path + '/topaz/' + name + "_predicted_plus_ground_truth.png")
+    plt.savefig(dataset_path + "/" + name + "_predicted_plus_ground_truth.png")
     plt.show()
 
     

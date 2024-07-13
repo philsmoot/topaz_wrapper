@@ -29,6 +29,7 @@
 
   "file_paths": {
     "root_path": "/hpc/projects/group.czii/phil.smoot/topaz_wrapper",
+    "program_path": "/topaz/topaz/commands/",
     "scripts_path": "/scripts/",
     "projects_path": "/execute_projects/",
     "processed_images_path": "/micrographs/",

@@ -4,7 +4,7 @@
 
 # next lines is for Bruno enivronment
 # module load cudnn/8.9.7.29_cuda12 cuda/12.0.0_525.60.13
-# ml anaconda; 
+# ml anaconda/latest; 
 # conda activate /hpc/projects/group.czii/phil.smoot/phil_topaz_wrapper/pyTopaz/
 
 if [ $# -ne 1 ]; then
