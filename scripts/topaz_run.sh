@@ -4,11 +4,11 @@
 
 # next lines is for Bruno enivronment
 # module load cudnn/8.9.7.29_cuda12 cuda/12.0.0_525.60.13
-# ml anaconda/latest; 
-# conda activate /hpc/projects/group.czii/phil.smoot/phil_topaz_wrapper/pyTopaz/
+ml anaconda/latest 
+conda activate /home/phil.smoot/projects/phil.smoot/topaz_wrapper/pytopaz
 
 if [ $# -ne 1 ]; then
-    echo "Usage: $0 config_file"
+    echo "Usage: $0 absolute_path_to_config_file"
     exit 1
 fi
 

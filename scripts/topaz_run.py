@@ -49,14 +49,13 @@ def ensure_directory_exists(directory_path):
     if not os.path.exists(directory_path):
         os.makedirs(directory_path)
         g_log.loginfo("ensure_directory_exists", f"Directory '{directory_path}' created.")
-    else:
-        g_log.loginfo("ensure_directory_exists", f"Directory '{directory_path}' already exists.")
-
+    
 def execute_preprocess(params):
 
     files_path = params['file_paths']
     root_path = files_path['root_path']
-    project_path = root_path + files_path['projects_path'] + params['project_name']
+    project_name = params['project_name'] 
+    project_path = root_path + files_path['projects_path'] + project_name
     processed_images_path = project_path + files_path['processed_images_path']
     rawdata_images = params['rawdata_images']
 
@@ -74,13 +73,15 @@ def execute_preprocess(params):
     
     end_time = time.time()
     duration = end_time - start_time
-    g_log.loginfo("execute_preprocess", f"Function 'execute_preprocess' took {duration:.6f} seconds to complete")
+    g_log.loginfo("execute_preprocess", f"Function 'execute_preprocess' took {duration:.2f} seconds to complete")
+    g_log.logperf(project_name, "execute_preprocess", "duration", f"{duration:.2f}", "seconds")
 
 def execute_convert(params):
 
     files_path = params['file_paths']
     root_path = files_path['root_path']
-    project_path = root_path + files_path['projects_path'] + params['project_name']
+    project_name = params['project_name'] 
+    project_path = root_path + files_path['projects_path'] + project_name
     processed_particles_file_path = project_path + files_path['processed_particles_file_path']
     rawdata_particles_file_path = params['rawdata_particles']
     preprocess_parameters = params['preprocess_parameters']
@@ -97,14 +98,15 @@ def execute_convert(params):
 
     end_time = time.time()
     duration = end_time - start_time
-    g_log.loginfo("execute_convert", f"Function 'execute_convert' took {duration:.6f} seconds to complete")
-
+    g_log.loginfo("execute_convert", f"Function 'execute_convert' took {duration:.2f} seconds to complete")
+    g_log.logperf(project_name, "execute_convert", "duration", f"{duration:.2f}", "seconds")
 
 def execute_train_test_split(params):
 
     files_path = params['file_paths']
     root_path = files_path['root_path']
-    project_path = root_path + files_path['projects_path'] + params['project_name']
+    project_name = params['project_name'] 
+    project_path = root_path + files_path['projects_path'] + project_name
     processed_images_path = project_path + files_path['processed_images_path']
     processed_particles_file_path = project_path + files_path['processed_particles_file_path']
     split_test_train_parameters = params['split_test_train_parameters']
@@ -121,14 +123,15 @@ def execute_train_test_split(params):
 
     end_time = time.time()
     duration = end_time - start_time
-    g_log.loginfo("execute_train_test_split", f"Function 'execute_train_test_split' took {duration:.6f} seconds to complete")
+    g_log.loginfo("execute_train_test_split", f"Function 'execute_train_test_split' took {duration:.2f} seconds to complete")
+    g_log.logperf(project_name, "execute_train_test_split", "duration", f"{duration:.2f}", "seconds")
 
 def execute_train(params):
 
     files_path = params['file_paths']
     root_path = files_path['root_path']
-    program_path = root_path + files_path['program_path']
-    project_path = root_path + files_path['projects_path'] + params['project_name']
+    project_name = params['project_name'] 
+    project_path = root_path + files_path['projects_path'] + project_name
     train_images = project_path + files_path['train_images']
     train_targets = project_path + files_path['train_targets']
     test_images = project_path + files_path['test_images']
@@ -158,14 +161,17 @@ def execute_train(params):
 
     end_time = time.time()
     duration = end_time - start_time
-    g_log.loginfo("execute_train", f"Function 'execute_train' took {duration:.6f} seconds to complete")
+    g_log.loginfo("execute_train", f"Function 'execute_train' took {duration:.2f} seconds to complete")
+    g_log.logperf(project_name, "execute_train", "duration", f"{duration:.2f}", "seconds")
 
 
 def execute_extract(params):
 
     files_path = params['file_paths']
     root_path = files_path['root_path']
-    project_path = root_path + files_path['projects_path'] + params['project_name']
+    project_name = params['project_name'] 
+    project_path = root_path + files_path['projects_path'] + project_name
+    model_path = project_path + files_path['model']
     predicted_particles_file_path = project_path + files_path['predicted_particles_file_path']
     processed_images = project_path + files_path['processed_images']
 
@@ -174,6 +180,7 @@ def execute_extract(params):
     
     command = "topaz extract" \
     + " -r " + radius \
+    + " -m " + model_path \
     + " -o " + predicted_particles_file_path \
     + " " + processed_images
 
@@ -183,14 +190,16 @@ def execute_extract(params):
 
     end_time = time.time()
     duration = end_time - start_time
-    g_log.loginfo("execute_extact", f"Function 'execute_extract' took {duration:.6f} seconds to complete")
+    g_log.loginfo("execute_extract", f"Function 'execute_extract' took {duration:.2f} seconds to complete")
+    g_log.logperf(project_name, "execute_extract", "duration", f"{duration:.2f}", "seconds")
 
-def execute_visualize_overlay(params):
+def execute_visualize_picks(params):
 
     files_path = params['file_paths']
     root_path = files_path['root_path']
     scripts_path = root_path + files_path['scripts_path']
-    project_path = root_path + files_path['projects_path'] + params['project_name']
+    project_name = params['project_name'] 
+    project_path = root_path + files_path['projects_path'] + project_name
     predicted_particles_file_path = project_path + files_path['predicted_particles_file_path']
     processed_particles_file_path = project_path + files_path['processed_particles_file_path']
     processed_images_path = project_path + files_path['processed_images_path']
@@ -199,7 +208,8 @@ def execute_visualize_overlay(params):
 
     extract_parameters = params['extract_parameters']
     radius = str(extract_parameters['radius'])
-    visualize_image = extract_parameters['visualize_image']
+    number_of_images_to_visualize = str(extract_parameters['number_of_images_to_visualize'])
+    display_plots = extract_parameters['display_plots']
      
     command = "python3 " + scripts_path + "visualize_picks.py" \
     + " " + root_path \
@@ -210,7 +220,8 @@ def execute_visualize_overlay(params):
     + " " + train_images \
     + " " + test_images \
     + " " + radius \
-    + " " + visualize_image
+    + " " + number_of_images_to_visualize \
+    + " " + display_plots
 
     start_time = time.time()
 
@@ -218,8 +229,9 @@ def execute_visualize_overlay(params):
 
     end_time = time.time()
     duration = end_time - start_time
-    g_log.loginfo("execute_visualize_overlay", f"Function 'execute_visualize_overlay' took {duration:.6f} seconds to complete")
-   
+    g_log.loginfo("execute_visualize_picks", f"Function 'execute_visualize_overlay' took {duration:.2f} seconds to complete")
+    g_log.logperf(project_name, "execute_visualize_picks", "duration", f"{duration:.2f}", "seconds")
+  
    
 def main(config_file):
 
@@ -229,16 +241,10 @@ def main(config_file):
     
     if config_file == "" :
         g_log.loginfo("main", "config_file is missing")
-        g_log.loginfo("main", "Usage: $ python topaz_run.py config_file")
+        g_log.loginfo("main", "Usage: $ python topaz_run.py absolute_path_to_config_file")
         exit(1)
     
-
-    # TODO fix path
-    # Read JSON file
-    # macbook 
-    # params = read_json_file('/Users/philsmoot/Repos/topaz_wrapper/scripts/' + config_file)
-    # bruno 
-    params = read_json_file('/hpc/projects/group.czii/phil.smoot/topaz_wrapper/scripts/' + config_file)
+    params = read_json_file(config_file)
 
     if params == None:
         exit(1)
@@ -270,8 +276,8 @@ def main(config_file):
     if pipeline_steps['run_extract'] == "true":
         execute_extract(params)
 
-    if pipeline_steps['run_visualize_overlay'] == "true":
-        execute_visualize_overlay(params)
+    if pipeline_steps['run_visualize_picks'] == "true":
+        execute_visualize_picks(params)
 
     g_log.loginfo("topaz_run.py main", "All done...")
 

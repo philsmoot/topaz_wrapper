@@ -1,34 +1,38 @@
 {
-  "project_name": "EMPIAR-10025",
-  "rawdata_images": "/Users/philsmoot/Repos/topaz/projects/data/EMPIAR-10025/rawdata/micrographs/*.mrc",
-  "rawdata_particles": "/Users/philsmoot/Repos/topaz/projects/data/EMPIAR-10025/rawdata/particles.txt",
+  "project_name": "thyroglobulin",
+  "rawdata_images": "/hpc/projects/group.czii/phil.smoot/raw_data/curated_ml_challenge/thyroglobulin/*.mrc",
+  "rawdata_particles": "/hpc/projects/group.czii/phil.smoot/raw_data/curated_ml_challenge/particles_84x84_thg.txt",
 
   "pipeline_steps": {
-    "run_preprocess": "true",
-    "run_convert": "true",
-    "run_split_test_train": "true",
-    "run_train": "true",
-    "run_extract": "true",
-    "run_visualize_overlay": "true"
+    "run_preprocess": "false",
+    "run_convert": "false",
+    "run_split_test_train": "false",
+    "run_train": "false",
+    "run_extract": "false",
+    "run_visualize_picks": "true"
   },
 
   "preprocess_parameters": {
-    "downsampling": 8
+    "downsampling": 1
   },
+
   "split_test_train_parameters": {
     "number_of_held_out_test_images": 10
   },
+
   "training_parameters": {
-    "number_of_predicted_particles": 400,
-    "number_workers": 8
+    "number_of_predicted_particles": 240,
+    "number_workers": 1
   },
+  
   "extract_parameters": {
     "radius": 14,
-    "visualize_image": "14sep05c_c_00007gr_00013sq_00009hl_00002es_c"  
+    "number_of_images_to_visualize": 2,
+    "display_plots": "true"
   },
 
   "file_paths": {
-    "root_path": "/Users/philsmoot/Repos/topaz_wrapper",
+    "root_path": "/hpc/projects/group.czii/phil.smoot/topaz_wrapper",
     "program_path": "/topaz/topaz/commands/",
     "scripts_path": "/scripts/",
     "projects_path": "/execute_projects/",
@@ -41,6 +45,7 @@
     "test_targets": "/particles_test.txt",
     "predicted_particles_file_path": "/predicted_particles.txt",
     "save_prefix": "/model",
-    "model_file_path": "/model_training.txt" 
+    "model_file_path": "/model_training.txt",
+    "model": "/model_epoch10.sav"
   }
 }

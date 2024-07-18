@@ -14,7 +14,7 @@ import argparse
 # 
 
 def main(root_path, dataset_path, predicted_particles_file_path, processed_particles_file_path, \
-         processed_images, train_images, train_targets, radius, image_file):
+         processed_images, train_images, train_targets, radius, number_of_images_to_visualize, display_plots):
     
     root_path = root_path
     dataset_path = dataset_path
@@ -23,7 +23,6 @@ def main(root_path, dataset_path, predicted_particles_file_path, processed_parti
     processed_images = processed_images + "*.mrc"
     train_images = train_images
     train_targets = train_targets
-    image_file = image_file
     radius = int(radius)
 
     sys.path.append(root_path)
@@ -33,8 +32,8 @@ def main(root_path, dataset_path, predicted_particles_file_path, processed_parti
     predicted_particles.head()
 
     # print the mumber of particles with score > 0
-    num_particles =np.sum(predicted_particles.score >= 0) # how many particles are predicted with score >= 0
-    print("Number of particles with score > 0 = " + str(num_particles))
+    # num_particles =np.sum(predicted_particles.score >= 0) # how many particles are predicted with score >= 0
+    # print("Number of particles with score > 0 = " + str(num_particles))
 
     #
     # Show the overlay of predicted particles and ground truth particles
@@ -58,66 +57,69 @@ def main(root_path, dataset_path, predicted_particles_file_path, processed_parti
     images_test = set(images_test.image_name)
     image_names = list(images_test) # micrograph names for the test set
 
-    #
-    # First test image
-    # 
-    name = image_file
-    im = micrographs[name]
-    particles = predicted_particles.loc[predicted_particles['image_name'] == name]
+    for image_name in image_names[:int(number_of_images_to_visualize)]:
 
-    # visualize predicted particles with log-likelihood ratio >= 0 (p >= 0.5)
-    particles = particles.loc[particles['score'] >= 0]
+        name = image_name
+        im = micrographs[name]
+        particles = predicted_particles.loc[predicted_particles['image_name'] == name]
 
-    #
-    # plot the predicted particles in blue and show them
-    # 
-    _,ax = plt.subplots(figsize=(16,16))
-    ax.imshow(im, cmap='Greys_r', vmin=-3.5, vmax=3.5, interpolation='bilinear')
+        # visualize predicted particles with log-likelihood ratio >= 0 (p >= 0.5)
+        particles = particles.loc[particles['score'] >= 0]
 
-    for x,y in zip(particles.x_coord, particles.y_coord):
-        c = Circle((x,y),radius,fill=False,color='b')
-        ax.add_patch(c)
-    plt.xlabel(name + " predicted==blue;")
-    plt.savefig(dataset_path + "/" + name + "_predicted.png")
-    plt.show()
+        #   
+        # plot the (partial) ground truth particles in red and show them
+        # 
+        _,ax = plt.subplots(figsize=(16,16))
+        ax.imshow(im, cmap='Greys_r', vmin=-3.5, vmax=3.5, interpolation='bilinear')
 
-    #   
-    # plot the (partial) ground truth particles in red and show them
-    # 
-    _,ax = plt.subplots(figsize=(16,16))
-    ax.imshow(im, cmap='Greys_r', vmin=-3.5, vmax=3.5, interpolation='bilinear')
+        ground_truth = labeled_particles.loc[labeled_particles['image_name'] == name]
 
-    ground_truth = labeled_particles.loc[labeled_particles['image_name'] == name]
+        for x,y in zip(ground_truth.x_coord, ground_truth.y_coord):
+            c = Circle((x,y),radius,fill=False,color='r')
+            ax.add_patch(c)
+        plt.xlabel(name + " ground_truth==red")
+        plt.savefig(dataset_path + "/" + name + "_ground_truth.png")
+        if display_plots == "true":
+            plt.show()
 
-    for x,y in zip(ground_truth.x_coord, ground_truth.y_coord):
-        c = Circle((x,y),radius,fill=False,color='r')
-        ax.add_patch(c)
-    plt.xlabel(name + " ground_truth==red")
-    plt.savefig(dataset_path + "/" + name + "_ground_truth.png")
-    plt.show()
+        #
+        # plot the predicted particles in blue and show them
+        # 
+        _,ax = plt.subplots(figsize=(16,16))
+        ax.imshow(im, cmap='Greys_r', vmin=-3.5, vmax=3.5, interpolation='bilinear')
 
-    #
-    # plot the overlay of predicted and truth and show them
-    #
+        for x,y in zip(particles.x_coord, particles.y_coord):
+            c = Circle((x,y),radius,fill=False,color='b')
+            ax.add_patch(c)
+        plt.xlabel(name + " predicted==blue;")
+        plt.savefig(dataset_path + "/" + name + "_predicted.png")
+        if display_plots == "true":
+            plt.show()
 
-    _,ax = plt.subplots(figsize=(16,16))
-    ax.imshow(im, cmap='Greys_r', vmin=-3.5, vmax=3.5, interpolation='bilinear')
 
-    # plot the predicted particles in blue
-    for x,y in zip(particles.x_coord, particles.y_coord):
-        c = Circle((x,y),radius,fill=False,color='b')
-        ax.add_patch(c)
-    
-    # plot the (partial) ground truth particles in red
-    ground_truth = labeled_particles.loc[labeled_particles['image_name'] == name]
+        #
+        # plot the overlay of predicted and truth and show them
+        #
 
-    for x,y in zip(ground_truth.x_coord, ground_truth.y_coord):
-        c = Circle((x,y),radius,fill=False,color='r')
-        ax.add_patch(c)
+        _,ax = plt.subplots(figsize=(16,16))
+        ax.imshow(im, cmap='Greys_r', vmin=-3.5, vmax=3.5, interpolation='bilinear')
 
-    plt.xlabel(name + " predicted==blue; ground_truth==red")
-    plt.savefig(dataset_path + "/" + name + "_predicted_plus_ground_truth.png")
-    plt.show()
+        # plot the predicted particles in blue
+        for x,y in zip(particles.x_coord, particles.y_coord):
+            c = Circle((x,y),radius,fill=False,color='b')
+            ax.add_patch(c)
+        
+        # plot the (partial) ground truth particles in red
+        ground_truth = labeled_particles.loc[labeled_particles['image_name'] == name]
+
+        for x,y in zip(ground_truth.x_coord, ground_truth.y_coord):
+            c = Circle((x,y),radius,fill=False,color='r')
+            ax.add_patch(c)
+
+        plt.xlabel(name + " predicted==blue; ground_truth==red")
+        plt.savefig(dataset_path + "/" + name + "_predicted_plus_ground_truth.png")
+        if display_plots == "true":
+            plt.show()
 
     
 if __name__ == "__main__":
@@ -134,7 +136,8 @@ if __name__ == "__main__":
     parser.add_argument("train_images", type=str)
     parser.add_argument("train_targets", type=str)
     parser.add_argument("radius", type=str)
-    parser.add_argument("image_file", type=str)  
+    parser.add_argument("number_of_images_to_visualize", type=str)
+    parser.add_argument("display_plots", type=str)  
 
     # Parse the arguments
     args = parser.parse_args()
@@ -142,5 +145,5 @@ if __name__ == "__main__":
     # Pass the input strings to the main function
     main(args.root_path, args.dataset_path, args.predicted_particles_file_path, \
          args.processed_particles_file_path, args.processed_images, args.train_images, \
-              args.train_targets, args.radius, args.image_file)
+              args.train_targets, args.radius, args.number_of_images_to_visualize, args.display_plots)
 

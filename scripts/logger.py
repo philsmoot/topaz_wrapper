@@ -83,10 +83,10 @@ class Logger:
     # append info to perflog
     # format - datetime,calling_module,metric,measure,unit 
     #           
-    def logperf(self, module, metric, measure, unit):
+    def logperf(self, project, module, metric, measure, unit):
         now = datetime.now()
         date_time = now.strftime(self.datetime_format)
-        message = date_time + "," + module + "," + metric + "," + measure + "," + unit
+        message = date_time + "," + project + "," + module + "," + metric + "," + measure + "," + unit
         self.perflog.write(message + "\n")
         if self.level:
             print(message)
@@ -109,5 +109,5 @@ class Logger:
 # logger = Logger("testeventlog", "", 1)
 # logger = Logger("testevent.log", "testperf.log", 1)
 # logger.loginfo("hpcutil.loginfo", "test msg")
-# logger.logperf("hpcutil.logperf", "particle_picking_per_tomo", "6000", "seconds" )
+# logger.logperf("test", "hpcutil.logperf", "particle_picking_per_tomo", "6000", "seconds" )
 # logger.close()
