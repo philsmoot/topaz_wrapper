@@ -4,10 +4,10 @@
   "rawdata_particles": "/hpc/projects/group.czii/phil.smoot/raw_data/curated_ml_challenge/particles_64x64_beta_gal.txt",
 
   "pipeline_steps": {
-    "run_preprocess": "false",
-    "run_convert": "false",
-    "run_split_test_train": "false",
-    "run_train": "false",
+    "run_preprocess": "true",
+    "run_convert": "true",
+    "run_split_test_train": "true",
+    "run_train": "true",
     "run_extract": "true",
     "run_visualize_picks": "true"
   },
@@ -28,7 +28,8 @@
   "extract_parameters": {
     "radius": 14,
     "number_of_images_to_visualize": 2,
-    "display_plots": "true"
+    "display_plots": "false",
+    "score": 0
   },
 
   "file_paths": {

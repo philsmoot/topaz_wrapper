@@ -203,13 +203,13 @@ def execute_visualize_picks(params):
     predicted_particles_file_path = project_path + files_path['predicted_particles_file_path']
     processed_particles_file_path = project_path + files_path['processed_particles_file_path']
     processed_images_path = project_path + files_path['processed_images_path']
-    train_images = project_path + files_path['train_images']
     test_images = project_path + files_path['test_images']
 
     extract_parameters = params['extract_parameters']
     radius = str(extract_parameters['radius'])
     number_of_images_to_visualize = str(extract_parameters['number_of_images_to_visualize'])
     display_plots = extract_parameters['display_plots']
+    score = str(extract_parameters['score'])
      
     command = "python3 " + scripts_path + "visualize_picks.py" \
     + " " + root_path \
@@ -217,11 +217,11 @@ def execute_visualize_picks(params):
     + " " + predicted_particles_file_path \
     + " " + processed_particles_file_path \
     + " " + processed_images_path \
-    + " " + train_images \
     + " " + test_images \
     + " " + radius \
     + " " + number_of_images_to_visualize \
-    + " " + display_plots
+    + " " + display_plots \
+    + " " + score
 
     start_time = time.time()
 

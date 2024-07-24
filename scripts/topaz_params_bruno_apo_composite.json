@@ -1,35 +1,35 @@
 {
-  "project_name": "ribosome_iter1",
-  "rawdata_images": "/hpc/projects/group.czii/phil.smoot/raw_data/curated_ml_challenge/ribosome_iter1/*.mrc",
-  "rawdata_particles": "/hpc/projects/group.czii/phil.smoot/raw_data/curated_ml_challenge/particles_88x88_ribo.txt",
+  "project_name": "composite",
+  "rawdata_images": "",
+  "rawdata_particles": "",
 
   "pipeline_steps": {
-    "run_preprocess": "true",
-    "run_convert": "true",
-    "run_split_test_train": "true",
-    "run_train": "true",
+    "run_preprocess": "false",
+    "run_convert": "false",
+    "run_split_test_train": "false",
+    "run_train": "false",
     "run_extract": "true",
     "run_visualize_picks": "true"
   },
 
   "preprocess_parameters": {
-    "downsampling": 1
+    "downsampling": 0
   },
 
   "split_test_train_parameters": {
-    "number_of_held_out_test_images": 40
+    "number_of_held_out_test_images": 0
   },
 
   "training_parameters": {
-    "number_of_predicted_particles": 240,
-    "number_workers": 1
+    "number_of_predicted_particles": 0,
+    "number_workers": 0
   },
   
   "extract_parameters": {
     "radius": 14,
-    "number_of_images_to_visualize": 2,
-    "display_plots": "false",
-    "score": 0
+    "number_of_images_to_visualize": 1,
+    "display_plots": "true",
+    "score": 1
   },
 
   "file_paths": {
@@ -39,14 +39,14 @@
     "projects_path": "/execute_projects/",
     "processed_images_path": "/micrographs/",
     "processed_images": "/micrographs/*.mrc",
-    "processed_particles_file_path": "/particles.txt",
+    "processed_particles_file_path": "/apo_composite_particles.txt",
     "train_images": "/image_list_train.txt",
     "train_targets": "/particles_train.txt",
     "test_images": "/image_list_test.txt",
     "test_targets": "/particles_test.txt",
-    "predicted_particles_file_path": "/predicted_particles.txt",
+    "predicted_particles_file_path": "/apo_predicted_particles.txt",
     "save_prefix": "/model",
     "model_file_path": "/model_training.txt",
-    "model": "/model_epoch10.sav"
+    "model": "/apo_model_epoch10.sav"
   }
 }

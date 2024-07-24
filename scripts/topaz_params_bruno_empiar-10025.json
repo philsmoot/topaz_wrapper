@@ -4,10 +4,10 @@
   "rawdata_particles": "/hpc/projects/group.czii/phil.smoot/raw_data/EMPIAR-10025/rawdata/particles.txt",
 
   "pipeline_steps": {
-    "run_preprocess": "false",
-    "run_convert": "false",
-    "run_split_test_train": "false",
-    "run_train": "false",
+    "run_preprocess": "true",
+    "run_convert": "true",
+    "run_split_test_train": "true",
+    "run_train": "true",
     "run_extract": "true",
     "run_visualize_picks": "true"
   },
@@ -22,13 +22,14 @@
 
   "training_parameters": {
     "number_of_predicted_particles": 400,
-    "number_workers": 8
+    "number_workers": 1
   },
   
   "extract_parameters": {
     "radius": 14,
     "number_of_images_to_visualize": 2,
-    "display_plots": "true"  
+    "display_plots": "false",
+    "score": 0  
   },
 
   "file_paths": {

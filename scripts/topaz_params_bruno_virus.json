@@ -28,7 +28,8 @@
   "extract_parameters": {
     "radius": 14,
     "number_of_images_to_visualize": 2,
-    "display_plots": "true"
+    "display_plots": "false",
+    "score": 0
   },
 
   "file_paths": {
