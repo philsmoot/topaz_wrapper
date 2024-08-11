@@ -22,11 +22,12 @@
 
   "training_parameters": {
     "number_of_predicted_particles": 240,
-    "number_workers": 8
+    "number_workers": 8,
+    "radius": 12
   },
   
   "extract_parameters": {
-    "radius": 14,
+    "radius": 24,
     "number_of_images_to_visualize": 1,
     "display_plots": "true",
     "score": 0

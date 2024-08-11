@@ -142,11 +142,13 @@ def execute_train(params):
     training_parameters = params['training_parameters']
     number_workers = str(training_parameters['number_workers'])
     number_of_predicted_particles = str(training_parameters['number_of_predicted_particles'])
+    radius = str(training_parameters['radius'])
     
   
     # command = "python3 " + program_path + 'train.py' \
     command = "topaz train" \
     + " -n " + number_of_predicted_particles \
+    + " -r " + radius \
     + " --num-workers=" + number_workers \
     + " --train-images " + train_images \
     + " --train-targets " + train_targets \

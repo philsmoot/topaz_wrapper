@@ -30,7 +30,15 @@ def main(root_path, dataset_path, predicted_particles_file_path, processed_parti
     predicted_particles = pd.read_csv(predicted_particles_file_path, sep='\t')
     predicted_particles.head()
 
-    # print the mumber of particles with score > 0
+    # plot the distribution of scores (predicted log-likelihood ratios)
+    _ = plt.hist(predicted_particles.score, bins=50)
+    plt.xlabel('Predicted score (predicted log-likelihood ratio) radius==' + str(radius))
+    plt.ylabel('Number of particles')
+    plt.savefig(dataset_path + "/scores_distribution_radius_" + str(radius) + ".png")
+    if display_plots == "true":
+            plt.show()   
+
+    # print the mumber of particles >= score 
     num_particles =np.sum(predicted_particles.score >= int(score)) # how many particles are predicted with score >= 0
     print("Number of particles with score > " + score + " = " + str(num_particles))
 

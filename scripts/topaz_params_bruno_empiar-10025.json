@@ -22,7 +22,8 @@
 
   "training_parameters": {
     "number_of_predicted_particles": 400,
-    "number_workers": 1
+    "number_workers": 1,
+    "radius": 3
   },
   
   "extract_parameters": {
