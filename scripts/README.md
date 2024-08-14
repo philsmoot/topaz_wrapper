@@ -15,6 +15,10 @@ $ conda create --prefix=/{working_directory_path}/topaz_wrapper/pytopaz
 $ conda activate /{working_directory_path}/topaz_wrapper/pytopaz
 
 # for Bruno and 3400 enviroments install cuda dependencies
+
+# for Bruno (pytorch 2.3.1 py3.8cpu_0 pytorch;  pytorch-mutex 1.0 cpu pytorch)
+$ conda install pytorch torchvision
+# for 3400...
 $ conda install pytorch torchvision torchaudio pytorch-cuda=12.1 cupy cudnn cutensor nccl -c conda-forge -c pytorch -c nvidia
 
 # clone the topaz source code
