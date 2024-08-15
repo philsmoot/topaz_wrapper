@@ -26,3 +26,5 @@ license = {file = "LICENSE"}
 [project.scripts]
 create_parameter = "scripts.parameters_factor:create_parameter_file"
 
+[tool.hatch.version]
+source = "vcs"
