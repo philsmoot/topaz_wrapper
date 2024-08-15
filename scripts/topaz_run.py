@@ -15,6 +15,7 @@ import argparse
 import os
 import time
 from logger import Logger
+from scripts import parameters_factory as pf
 
 def launch_shell_script(command):
 
@@ -35,9 +36,10 @@ def launch_shell_script(command):
 
 def read_json_file(file_path):    
     try:
-        with open(file_path, 'r') as file:
-            data = json.load(file)
-            return data
+        return pf.read_topaz_parameters(file_path)
+        # with open(file_path, 'r') as file:
+        #     data = json.load(file)
+        #     return data
     except FileNotFoundError:
         g_log.loginfo("read_json_file", "Error: File not found: " + file_path)
         return None
@@ -47,7 +49,7 @@ def read_json_file(file_path):
 
 def ensure_directory_exists(directory_path):
     if not os.path.exists(directory_path):
-        os.makedirs(directory_path)
+        os.makedirs(directory_path, exist_ok = True)
         g_log.loginfo("ensure_directory_exists", f"Directory '{directory_path}' created.")
     
 def execute_preprocess(params):
