@@ -8,11 +8,13 @@ def cli(ctx):
     pass
 
 class ProcessingExperment(BaseModel):
+    specimen: str
     session: str
     run: str    
     slabPickRun: str
 
 class ProcessingInput(BaseModel):
+    base_project_path: str
     rawdata_images: str
     rawdata_particles: str        
 
