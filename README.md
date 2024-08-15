@@ -1,10 +1,10 @@
-# Topaz Wrapper Environment Setup
+# Topaz Wrapper Enviroment Setup
 
 # clone the topaz wrapper source code in a working directory
 
 $ git clone https://github.com/philsmoot/topaz_wrapper.git
 
-# create and activate the topaz conda enivronment
+# create and activate the topaz conda enviroment
 
 $ cd topaz_wrapper
 
