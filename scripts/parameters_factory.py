@@ -7,17 +7,18 @@ import json, click
 def cli(ctx):
     pass
 
-class ProcessingInput(BaseModel):
+class ProcessingExperment(BaseModel):
     session: str
-    run: str
+    run: str    
     slabPickRun: str
-    boxSize: str
-    rawdata_images: str,
+
+class ProcessingInput(BaseModel):
+    rawdata_images: str
     rawdata_particles: str        
 
 class ProcessingOutput(BaseModel):
     model_file_save_path: str
-    predicted_particles_file_path: str
+    dir: str
 
 class PipelineSteps(BaseModel):
     run_preprocess: str
@@ -28,6 +29,7 @@ class PipelineSteps(BaseModel):
     run_visualize_picks: str
 
 class TopazParameters(BaseModel):
+    boxSize: int    
     downsampling: int
     number_of_held_out_test_images: int
     number_of_predicted_particles: int
@@ -36,47 +38,56 @@ class TopazParameters(BaseModel):
     extract_radius: int
     number_of_images_to_visualize: int
     display_plots: str
-    score: int  
-    input: ProcessingInput
-    output: ProcessingOutput     
+    score: int     
 
 class ProcessingConfig(BaseModel):
+    experiment: ProcessingExperment
     input: ProcessingInput
     output: ProcessingOutput
     pipeline: PipelineSteps
     parameters: TopazParameters
 
-def create_boilerplate_json(file_path: str = 'example_parameter.json',
-                            box_size: int = 64):
+def create_boilerplate_json(file_path: str = 'example_parameter.json'):
     default_config = ProcessingConfig( 
-        input = ProcessingInput(
+        experiment = ProcessingExperment(
+            specimen="ribosome-80s",
             session="24jun10a",
             run="run001",
             slabPickRun="run001"
-            boxSize = box_size
-        )
+        ),
+        input = ProcessingInput(
+            base_project_path = "/hpc/projects/group.czii/krios1.processing",
+            rawdata_images = "{base_project_path}/slabpick/{session}/{slabPickRun}/gallery/*.mrc",
+            rawdata_particles = "{base_project_path}/slabpick/{session}/"
+        ),
         output=ProcessingOutput(
-            dir="{baseProjectPath}/topaz/{session}/specimen/{run}"
-        )
+            model_file_save_path="{base_project_path}/topaz/{session}/{specimen}/{run}/models",
+            dir="{base_project_path}/topaz/{session}/{specimen}/{run}"
+        ),
         pipeline=PipelineSteps(
-            run_preprocess="yes"
-            run_convert: "yes"
-            run_split_test_train: "no"
-            run_train: "yes"
-            run_extract: "yes"
-            run_visualize_picks: "yes"
-        )
+            run_preprocess="yes",
+            run_convert="yes",
+            run_split_test_train="no",
+            run_train="yes",
+            run_extract="yes",
+            run_visualize_picks="yes"
+        ),
         parameters=TopazParameters(
-            downsampling: 1
-            number_of_held_out_test_images: 30 
-            number_of_predicted_particles: 240 
-            number_workers: 1
-            train_radius: 3
-            extract_radius: 14
-            number_of_images_to_visualize: 2
-            display_plots: true
-            score: 0
+            boxSize=64,            
+            downsampling=1,
+            number_of_held_out_test_images=30,
+            number_of_predicted_particles=240,
+            number_workers=1,
+            train_radius=3,
+            extract_radius=14,
+            number_of_images_to_visualize=2,
+            display_plots="true",
+            score=0
         )
+    )
+
+    with open(file_path, "w") as f:
+        json.dump(default_config.dict(), f, indent=4)    
 
 def read_topaz_parameters(json_path):
 

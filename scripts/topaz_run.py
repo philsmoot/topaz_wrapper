@@ -47,7 +47,7 @@ def read_json_file(file_path):
 
 def ensure_directory_exists(directory_path):
     if not os.path.exists(directory_path):
-        os.makedirs(directory_path)
+        os.makedirs(directory_path, exist_ok = True)
         g_log.loginfo("ensure_directory_exists", f"Directory '{directory_path}' created.")
     
 def execute_preprocess(params):
