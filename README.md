@@ -33,4 +33,9 @@ $ pip install .
 
 # roll back numpy to be less then version 2.0 for an overflow bug
 
-$ pip ins
+$ pip install numpy==1.26.4
+
+# install matplotlib for graphic output
+
+$ conda install matplotlib
+
