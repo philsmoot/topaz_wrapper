@@ -19,7 +19,7 @@ class ProcessingInput(BaseModel):
     rawdata_particles: str        
 
 class ProcessingOutput(BaseModel):
-    model_file_save_path: str
+    file_save_model_path: str
     dir: str
 
 class PipelineSteps(BaseModel):
@@ -63,7 +63,7 @@ def create_boilerplate_json(file_path: str = 'example_parameter.json'):
             rawdata_particles = "{base_project_path}/slabpick/{session}/"
         ),
         output=ProcessingOutput(
-            model_file_save_path="{base_project_path}/topaz/{session}/{specimen}/{run}/models",
+            file_save_model_path="{base_project_path}/topaz/{session}/{specimen}/{run}/models",
             dir="{base_project_path}/topaz/{session}/{specimen}/{run}"
         ),
         pipeline=PipelineSteps(
@@ -109,7 +109,6 @@ def read_topaz_parameters(json_path):
     help="The Name for the Saved Parameter File",
 )
 def create_parameter_file(
-    ctx, 
     file_path: str
     ):
 
