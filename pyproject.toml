@@ -25,5 +25,7 @@ description = "Command line tools to Run Topaz on CryoET Datasets."
 readme = "README.md"
 
 [project.scripts]
-create_parameter = "scripts.parameters_factor:create_parameter_file"
+create_parameter = "scripts.parameters_factory:create_parameter_file"
 
+[tool.hatch.version]
+source = "vcs"
