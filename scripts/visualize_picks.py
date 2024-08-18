@@ -35,7 +35,7 @@ def main(root_path, dataset_path, predicted_particles_file_path, processed_parti
     plt.xlabel('Predicted score (predicted log-likelihood ratio) radius==' + str(radius))
     plt.ylabel('Number of particles')
     plt.savefig(dataset_path + "/scores_distribution_radius_" + str(radius) + ".png")
-    if display_plots == "true":
+    if display_plots == "yes":
             plt.show()   
 
     # print the mumber of particles >= score 
@@ -95,7 +95,7 @@ def main(root_path, dataset_path, predicted_particles_file_path, processed_parti
 
         plt.xlabel(name + " predicted==blue(" + str(num_particles) + "); ground_truth==red(" + str(num_labeled_particles) + "); score >= " + score)
         plt.savefig(dataset_path + "/" + name + "_predicted_plus_ground_truth.png")
-        if display_plots == "true":
+        if display_plots == "yes":
             plt.show()
 
     

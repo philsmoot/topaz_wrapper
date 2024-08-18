@@ -14,6 +14,7 @@ class ProcessingExperment(BaseModel):
     slabPickRun: str
 
 class ProcessingInput(BaseModel):
+    base_program_path: str
     base_project_path: str
     rawdata_images: str
     rawdata_particles: str        
@@ -58,9 +59,10 @@ def create_boilerplate_json(file_path: str = 'example_parameter.json'):
             slabPickRun="run001"
         ),
         input = ProcessingInput(
+            base_program_path = "/hpc/projects/group.czii/topaz_wrapper",
             base_project_path = "/hpc/projects/group.czii/krios1.processing",
             rawdata_images = "{base_project_path}/slabpick/{session}/{slabPickRun}/gallery/*.mrc",
-            rawdata_particles = "{base_project_path}/slabpick/{session}/"
+            rawdata_particles = "{base_project_path}/slabpick/{session}/{slabPickRun}/particles.txt"
         ),
         output=ProcessingOutput(
             model_file_save_path="{base_project_path}/topaz/{session}/{specimen}/{run}/models",
@@ -69,7 +71,7 @@ def create_boilerplate_json(file_path: str = 'example_parameter.json'):
         pipeline=PipelineSteps(
             run_preprocess="yes",
             run_convert="yes",
-            run_split_test_train="no",
+            run_split_test_train="yes",
             run_train="yes",
             run_extract="yes",
             run_visualize_picks="yes"
@@ -93,11 +95,19 @@ def create_boilerplate_json(file_path: str = 'example_parameter.json'):
 
 def read_topaz_parameters(json_path):
 
-    # Read file
-    with open(json_path, "r") as f:
-        data = json.load(f)
-        config = ProcessingConfig(**data)
-    return config    
+    config = None
+
+    try:   
+        with open(json_path, 'r') as file:
+            data = json.load(file)
+            config = ProcessingConfig(**data)      
+    except FileNotFoundError:
+        print("Error: File not found: " + json_path)
+    except json.JSONDecodeError:
+        print("Error: Unable to parse JSON from file" + json_path)
+    
+    return config
+  
 
 # Create the boilerplate JSON file with a default file path
 @click.command(context_settings={"show_default": True})
