@@ -4,24 +4,25 @@ build-backend = "hatchling.build"
 
 [project]
 name = "scripts"
-requires-python = ">=3.9"
 dynamic = ["version"]
+requires-python = "==3.8.19"
 dependencies = [
     "topaz-em",
     "numpy<2.0",
+    "pandas==1.5",
     "click",
     "mrcfile",
     "starfile",
     "pydantic",
     "matplotlib"
 ]
+
 authors = [
   {name = "Phil Smoot", email = "phil.smoot@chanzuckerberg.com"},
   {name = "Jonathan Schwartz", email = "jonathan.schwartz@czii.org"}
 ]
 description = "Command line tools to Run Topaz on CryoET Datasets."
 readme = "README.md"
-license = {file = "LICENSE"}
 
 [project.scripts]
 create_parameter = "scripts.parameters_factory:create_parameter_file"
