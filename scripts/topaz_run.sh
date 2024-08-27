@@ -1,11 +1,9 @@
 #!/bin/bash
 #! chmod +x run_topaz.sh
-#! ./run_topaz.sh name_of_dataset
+#! ./run_topaz.sh params.json
 
-# next lines is for Bruno enivronment
-# module load cudnn/8.9.7.29_cuda12 cuda/12.0.0_525.60.13
 ml anaconda/latest 
-conda activate /home/phil.smoot/projects/phil.smoot/topaz_wrapper/pytopaz
+conda activate /hpc/projects/group.czii/topaz_wrapper/pytopaz
 
 if [ $# -ne 1 ]; then
     echo "Usage: $0 absolute_path_to_config_file"
@@ -21,7 +19,7 @@ echo
 
 date; step_start_time=`date +%s`
 
-python3 topaz_run.py $CONFIG_FILE
+topaz_run --file-path $CONFIG_FILE
 
 echo
 echo End Run Topaz Commmands
