@@ -36,8 +36,8 @@ class Sys_Params():
         self.model_file_path = "/model_training.txt"
         self.model = "/model_epoch10.sav"
         self.verbosity = 1
-        # self.system = "hpc"
-        self.system = "macos"
+        self.system = "hpc"
+        # self.system = "macos"
 
 def launch_shell_script(command):
 
