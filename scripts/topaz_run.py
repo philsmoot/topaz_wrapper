@@ -7,45 +7,37 @@
 #   extract (prediction)
 #   visualize (visualize predictions overlaying predictions with ground truth) 
 
-# Usage - $ python topaz_run.py $CONFIG_FILE
+# Usage - $ topaz_run --file-path $CONFIG_FILE
 
-import json
 import subprocess
-import argparse
 import os
 import time
-from logger import Logger
+from scripts import logger as logger
 from scripts import parameters_factory as pf
+import click
+
+@click.group()
+@click.pass_context
+def cli(ctx):
+    pass
 
 class Sys_Params():
     def __init__(self):
-        try:   
-            with open('sys_params.json', 'r') as file:
-            # with open('/Users/philsmoot/Repos/topaz_wrapper/scripts/sys_params.json', 'r') as file:
-                sys_params = json.load(file)
-                if sys_params != None:       
-                    file_paths = sys_params['file_paths']  
-                    self.scripts_path = file_paths['scripts_path'] 
-                    self.processed_images_path = file_paths['processed_images_path']
-                    self.processed_images = file_paths['processed_images']
-                    self.processed_particles = file_paths['processed_particles']
-                    self.train_images = file_paths['train_images']
-                    self. train_targets = file_paths['train_targets']
-                    self.test_images = file_paths['test_images']
-                    self.test_targets = file_paths['test_targets']
-                    self.predicted_particles = file_paths['predicted_particles']
-                    self.save_prefix = file_paths['save_prefix']
-                    self.model_file_path = file_paths['model_file_path']
-                    self.model = file_paths['model']
-                    parameters = sys_params['parameters']
-                    self.verbosity = parameters['verbosity']
-                    self.system = parameters['system']
-        except FileNotFoundError:
-            print("Error: File not found: " + 'sys_params.json')
-            exit()
-        except json.JSONDecodeError:
-            print("Error: Unable to parse JSON from file" + 'sys_params.json')
-            exit()
+        self.scripts_path = "/scripts/"
+        self.processed_images_path = "/micrographs/"
+        self.processed_images = "/micrographs/*.mrc"
+        self.processed_particles = "/particles.txt"
+        self.train_images = "/image_list_train.txt"
+        self.train_targets = "/particles_train.txt"
+        self.test_images = "/image_list_test.txt"
+        self.test_targets = "/particles_test.txt"
+        self.predicted_particles = "/predicted_particles.txt"
+        self.save_prefix = "/model"
+        self.model_file_path = "/model_training.txt"
+        self.model = "/model_epoch10.sav"
+        self.verbosity = 1
+        # self.system = "hpc"
+        self.system = "macos"
 
 def launch_shell_script(command):
 
@@ -210,13 +202,13 @@ def execute_train(sys_params, user_params):
                                                                     specimen=user_params.experiment.specimen,
                                                                     run=user_params.experiment.run)
      # save_prefix
-    save_prefix = user_params.output.model_file_save_path + sys_params.save_prefix
+    save_prefix = user_params.output.file_save_model_path + sys_params.save_prefix
     formatted_save_prefix = save_prefix.format(base_project_path = user_params.input.base_project_path,
                                                                     session=user_params.experiment.session,
                                                                     specimen=user_params.experiment.specimen,
                                                                     run=user_params.experiment.run)
     # model_file_path
-    model_file_path = user_params.output.model_file_save_path + sys_params.model_file_path
+    model_file_path = user_params.output.file_save_model_path + sys_params.model_file_path
     formatted_model_file_path= model_file_path.format(base_project_path = user_params.input.base_project_path,
                                                                     session=user_params.experiment.session,
                                                                     specimen=user_params.experiment.specimen,
@@ -366,7 +358,7 @@ def main(config_file):
 
     sys_params = Sys_Params()
 
-    g_log = Logger("topaz_event.log", "topaz_perf.log", sys_params.verbosity)
+    g_log = logger.Logger("topaz_event.log", "topaz_perf.log", sys_params.verbosity)
 
     if config_file == "" :
         g_log.loginfo("main", "config_file is missing")
@@ -401,15 +393,21 @@ def main(config_file):
 
     g_log.loginfo("topaz_run.py main", "All done... good bye")
 
+
+# Create the boilerplate JSON file with a default file path
+@click.command(context_settings={"show_default": True})
+@click.option(
+    "--file-path",
+    type=str,
+    required=False,
+    default='topaz_params.json',
+    help="The Name for the input parameter file",
+)
+def topaz_run(
+    file_path: str
+    ):
+
+    main(file_path)
+
 if __name__ == "__main__":
-    
-    parser = argparse.ArgumentParser(description="Process a string argument.")
-    
-    # Add an argument for user config file
-    parser.add_argument("input_string", type=str, help="The input string to be processed.")
-    
-    # Parse the arguments
-    args = parser.parse_args()
-    
-    # Pass the input string (the configuration filenmame) to the main function
-    main(args.input_string)
+    cli()    
