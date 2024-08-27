@@ -12,6 +12,8 @@ class ProcessingExperment(BaseModel):
     session: str
     run: str    
     slabPickRun: str
+    aretomoRun: str
+    volume: str
 
 class ProcessingInput(BaseModel):
     base_program_path: str
@@ -41,7 +43,10 @@ class TopazParameters(BaseModel):
     extract_radius: int
     number_of_images_to_visualize: int
     display_plots: str
-    score: int     
+    score: int
+    pixelSize: int
+    voxelSize: int
+    tomoAlg: str    
 
 class ProcessingConfig(BaseModel):
     experiment: ProcessingExperment
@@ -61,8 +66,8 @@ class ProcessingConfig(BaseModel):
             'voxelSize': f"{self.parameters.voxelSize:.3f}",
             'tomoAlg': self.parameters.tomoAlg
         }
-        self.input.tomos = self.input.tomos.format(**placeholders)
-        self.output.dir = self.output.dir.format(**placeholders)    
+        # self.input.tomos = self.input.tomos.format(**placeholders)
+        # self.output.dir = self.output.dir.format(**placeholders)    
 
 def create_boilerplate_json(file_path: str = 'example_parameter.json'):
     default_config = ProcessingConfig( 
@@ -70,7 +75,9 @@ def create_boilerplate_json(file_path: str = 'example_parameter.json'):
             specimen="ribosome-80s",
             session="24jun10a",
             run="run001",
-            slabPickRun="run001"
+            slabPickRun="run001",
+            aretomoRun="",
+            volume=""
         ),
         input = ProcessingInput(
             base_program_path = "/hpc/projects/group.czii/topaz_wrapper",
@@ -100,7 +107,10 @@ def create_boilerplate_json(file_path: str = 'example_parameter.json'):
             extract_radius=14,
             number_of_images_to_visualize=2,
             display_plots="true",
-            score=0
+            score=0,
+            pixelSize=0,
+            voxelSize=0,
+            tomoAlg=""
         )
     )
 

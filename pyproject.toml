@@ -10,6 +10,7 @@ dependencies = [
     "topaz-em",
     "numpy<2.0",
     "pandas==1.5",
+    "scikit-image",
     "click",
     "mrcfile",
     "starfile",
@@ -26,6 +27,7 @@ readme = "README.md"
 
 [project.scripts]
 create_parameter = "scripts.parameters_factory:create_parameter_file"
+topaz_run = "scripts.topaz_run:topaz_run"
 
 [tool.hatch.version]
 source = "vcs"
