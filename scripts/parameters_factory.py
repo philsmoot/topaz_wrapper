@@ -12,8 +12,6 @@ class ProcessingExperment(BaseModel):
     session: str
     run: str    
     slabPickRun: str
-    aretomoRun: str
-    volume: str
 
 class ProcessingInput(BaseModel):
     base_program_path: str
@@ -44,9 +42,6 @@ class TopazParameters(BaseModel):
     number_of_images_to_visualize: int
     display_plots: str
     score: int
-    pixelSize: int
-    voxelSize: int
-    tomoAlg: str    
 
 class ProcessingConfig(BaseModel):
     experiment: ProcessingExperment
@@ -58,16 +53,16 @@ class ProcessingConfig(BaseModel):
     def update_paths(self):
         # Using str.format to dynamically replace placeholders
         placeholders = {
+            'specimen': self.experiment.specimen,
+            'base_project_path': self.input.base_project_path,
             'session': self.experiment.session,
             'run': self.experiment.run,
-            'aretomoRun': self.experiment.aretomoRun,
-            'volume': self.experiment.volume,
-            'pixelSize': f"{self.parameters.pixelSize:.3f}",
-            'voxelSize': f"{self.parameters.voxelSize:.3f}",
-            'tomoAlg': self.parameters.tomoAlg
+            'slabPickRun': self.experiment.slabPickRun
         }
-        # self.input.tomos = self.input.tomos.format(**placeholders)
-        # self.output.dir = self.output.dir.format(**placeholders)    
+        self.input.rawdata_images = self.input.rawdata_images.format(**placeholders)
+        self.input.rawdata_particles = self.input.rawdata_particles.format(**placeholders)
+        self.output.file_save_model_path = self.output.file_save_model_path.format(**placeholders)
+        self.output.dir = self.output.dir.format(**placeholders)
 
 def create_boilerplate_json(file_path: str = 'example_parameter.json'):
     default_config = ProcessingConfig( 
@@ -75,9 +70,7 @@ def create_boilerplate_json(file_path: str = 'example_parameter.json'):
             specimen="ribosome-80s",
             session="24jun10a",
             run="run001",
-            slabPickRun="run001",
-            aretomoRun="",
-            volume=""
+            slabPickRun="run001"
         ),
         input = ProcessingInput(
             base_program_path = "/hpc/projects/group.czii/topaz_wrapper",
@@ -107,10 +100,7 @@ def create_boilerplate_json(file_path: str = 'example_parameter.json'):
             extract_radius=14,
             number_of_images_to_visualize=2,
             display_plots="true",
-            score=0,
-            pixelSize=0,
-            voxelSize=0,
-            tomoAlg=""
+            score=0
         )
     )
 
