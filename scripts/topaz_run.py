@@ -276,3 +276,4 @@ def topaz_run(file_path: str):
 
 if __name__ == "__main__":
     cli() 
+
