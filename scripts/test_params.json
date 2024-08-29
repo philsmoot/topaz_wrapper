@@ -1,0 +1,38 @@
+{
+    "experiment": {
+        "specimen": "ribosome-80s",
+        "session": "15mar3a",
+        "run": "run001",
+        "slabPickRun": "run001"
+    },
+    "input": {
+        "base_program_path": "/hpc/projects/group.czii/krios1.processing/software/topaz_wrapper",
+        "base_project_path": "/hpc/projects/group.czii/krios1.processing",
+        "rawdata_images": "/hpc/projects/group.czii/cryoetdataportal.processing/topaz/EMPIAR-10025/gallery/*.mrc",
+        "rawdata_particles": "/hpc/projects/group.czii/cryoetdataportal.processing/topaz/EMPIAR-10025/particles.txt"
+    },
+    "output": {
+        "file_save_model_path": "{base_project_path}/topaz/{session}/{specimen}/{run}/models",
+        "dir": "{base_project_path}/topaz/{session}/{specimen}/{run}"
+    },
+    "pipeline": {
+        "run_preprocess": "yes",
+        "run_convert": "yes",
+        "run_split_test_train": "yes",
+        "run_train": "yes",
+        "run_extract": "yes",
+        "run_visualize_picks": "yes"
+    },
+    "parameters": {
+        "boxSize": 64,
+        "downsampling": 8,
+        "number_of_held_out_test_images": 10,
+        "number_of_predicted_particles": 400,
+        "number_workers": 1,
+        "train_radius": 3,
+        "extract_radius": 14,
+        "number_of_images_to_visualize": 2,
+        "display_plots": "no",
+        "score": 0
+    }
+}
