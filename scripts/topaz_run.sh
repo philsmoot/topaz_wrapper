@@ -3,7 +3,7 @@
 #! ./run_topaz.sh params.json
 
 ml anaconda/latest 
-conda activate /hpc/projects/group.czii/topaz_wrapper/pytopaz
+conda activate /hpc/projects/group.czii/krios1.processing/software/topaz_wrapper/pytopaz
 
 if [ $# -ne 1 ]; then
     echo "Usage: $0 absolute_path_to_config_file"

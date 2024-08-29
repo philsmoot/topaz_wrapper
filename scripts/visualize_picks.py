@@ -7,8 +7,16 @@ import glob
 import os
 import sys
 import argparse
+import click
+
+@click.group()
+@click.pass_context
+def cli(ctx):
+    pass
+
 
 #
+# print out a distribution of confidence scores
 # print out a plot of predicted and ground truth overlays
 # save plots to png files
 # 
@@ -125,3 +133,18 @@ if __name__ == "__main__":
               args.train_targets, args.radius, args.number_of_images_to_visualize, args.display_plots, \
                 args.score)
 
+'''
+import click
+
+@click.command()
+@click.option('--var1', required=True, help='First variable description')
+@click.option('--var2', required=False, help='Second variable description')
+@click.option('--var3', required=False, help='Third variable description')
+def my_command(var1, var2, var3):
+    click.echo(f'var1: {var1}')
+    click.echo(f'var2: {var2}')
+    click.echo(f'var3: {var3}')
+
+if __name__ == '__main__':
+    my_command()
+'''

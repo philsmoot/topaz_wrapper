@@ -134,6 +134,7 @@ def execute_train(sys_params, user_params):
     test_targets = user_params.output.dir + sys_params.test_targets
     save_prefix = user_params.output.file_save_model_path + sys_params.save_prefix
     model_file_path = user_params.output.file_save_model_path + sys_params.model_file_path
+    ensure_directory_exists(user_params.output.file_save_model_path)
     output_dir = user_params.output.dir
 
     # hack until I can figure out torch is not a module bug on macos

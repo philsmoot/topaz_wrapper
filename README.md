@@ -37,5 +37,9 @@ $ `create_parameter`
 # run topaz commands with parameters file
 
 $ `topaz_run --file-path path_to_parameters_file`
+or
+$ `cd scripts`
+$ `./topaz_run.sh parameters_file`
+
 
 

@@ -73,7 +73,7 @@ def create_boilerplate_json(file_path: str = 'example_parameter.json'):
             slabPickRun="run001"
         ),
         input = ProcessingInput(
-            base_program_path = "/hpc/projects/group.czii/topaz_wrapper",
+            base_program_path = "/hpc/projects/group.czii/krios1.processing/software/topaz_wrapper",
             base_project_path = "/hpc/projects/group.czii/krios1.processing",
             rawdata_images = "{base_project_path}/slabpick/{session}/{slabPickRun}/gallery/*.mrc",
             rawdata_particles = "{base_project_path}/slabpick/{session}/{slabPickRun}/particles.txt"
@@ -99,7 +99,7 @@ def create_boilerplate_json(file_path: str = 'example_parameter.json'):
             train_radius=3,
             extract_radius=14,
             number_of_images_to_visualize=2,
-            display_plots="true",
+            display_plots="no",
             score=0
         )
     )
