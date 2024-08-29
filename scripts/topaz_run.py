@@ -222,8 +222,6 @@ def main(config_file):
 
     global g_log
 
-    config_file =  "/Users/philsmoot/Repos/topaz_wrapper/scripts/params.json"
-
     sys_params = Sys_Params()
 
     g_log = logger.Logger("topaz_event.log", "topaz_perf.log", sys_params.verbosity)
