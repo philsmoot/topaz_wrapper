@@ -24,6 +24,7 @@ class ProcessingOutput(BaseModel):
     dir: str
 
 class PipelineSteps(BaseModel):
+    run_calculate_centers: str
     run_preprocess: str
     run_convert: str
     run_split_test_train: str
@@ -83,6 +84,7 @@ def create_boilerplate_json(file_path: str = 'example_parameter.json'):
             dir="{base_project_path}/topaz/{session}/{specimen}/{run}"
         ),
         pipeline=PipelineSteps(
+            run_calculate_centers="yes",
             run_preprocess="yes",
             run_convert="yes",
             run_split_test_train="yes",

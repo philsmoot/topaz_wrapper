@@ -12,6 +12,8 @@
 import subprocess
 import os
 import time
+import mrcfile
+import csv
 from scripts import logger as logger
 from scripts import parameters_factory as pf
 import click
@@ -59,7 +61,114 @@ def ensure_directory_exists(directory_path):
     if not os.path.exists(directory_path):
         os.makedirs(directory_path, exist_ok = True)
         g_log.loginfo("ensure_directory_exists", f"Directory '{directory_path}' created.")
+
+def find_max_values(csv_file):
+    #
+    # the particle_map.csv file has 5 columns per row
+    # row1 = tomogram
+    # row2 = particles
+    # row3 = gallery
+    # row4 = row
+    # row5 = column
+    # we are interested in the last 3 rows
+    #
     
+    max_third = 0
+    max_fourth = 0
+    max_fifth = 0
+    
+    try:
+        with open(csv_file, 'r') as file:
+            reader = csv.reader(file)
+            
+            # Skip the first row (header)
+            next(reader)
+            
+            for row in reader:
+                # Convert the second, third, and fourth entries to integers
+                third = int(row[2])
+                fourth = int(row[3])
+                fifth = int(row[4])
+                
+                # Update max values
+                if third > max_third:
+                    max_third = third
+                if fourth > max_fourth:
+                    max_fourth = fourth
+                if fifth > max_fifth:
+                    max_fifth = fifth
+
+    except FileNotFoundError:
+        print(f"Error: The file '{csv_file}' cannot be found or opened.")
+    
+    return max_third, max_fourth, max_fifth
+
+def get_mrc_dimensions(directory):
+    # Get list of all files in the directory
+    files = os.listdir(directory)
+    
+    # Filter out only .mrc files
+    mrc_files = [file for file in files if file.endswith('.mrc')]
+    
+    if not mrc_files:
+        raise FileNotFoundError("No MRC files found in the specified directory.")
+    
+    # Open the first .mrc file
+    first_mrc_file = os.path.join(directory, mrc_files[0])
+    
+    with mrcfile.open(first_mrc_file, permissive=True) as mrc:
+        x, y = mrc.header.nx, mrc.header.ny
+        
+    return int(x), int(y)
+
+def calculate_centers(rows, cols, img_width, img_height, raw_images_dir, output_file):
+
+    # Calculate the center coordinates of each image in a grid and save to a file.
+
+    # Initialize list to store image identifiers and centers
+    data = []
+
+    # Iterate over each file name
+    for filename in os.listdir(raw_images_dir):
+
+        if filename.endswith('.mrc'):
+            # Iterate over each grid position
+            for row in range(rows):
+                for col in range(cols):
+                    # Calculate center of current image
+                    center_x = col * img_width + img_width // 2
+                    center_y = row * img_height + img_height // 2
+                    # Append to data list                
+                    base_name = os.path.splitext(filename)[0]
+                    data.append((base_name, center_x, center_y))
+
+    # Write data to the output file
+    with open(output_file, 'w') as f:
+        # write the header
+        var1 = "image_name"
+        var2 = "x_coord"
+        var3 = "y_coord"
+        f.write(f"{var1}\t{var2}\t{var3}\n")
+        # write the data
+        for item in data:
+            f.write(f"{item[0]}\t{item[1]}\t{item[2]}\n")
+
+def execute_calculate_centers(sys_params, user_params):
+    
+    rawdata_images = user_params.input.rawdata_images
+    rawdata_path = os.path.dirname(rawdata_images)
+    particles_map = rawdata_path + "/particle_map.csv"
+    max_values = find_max_values(particles_map)
+    # max_gallery = max_values[0]
+    max_row = max_values[1] + 1
+    max_col = max_values[2] + 1
+    x_pixels, y_pixels = get_mrc_dimensions(rawdata_path)
+    image_width = int(x_pixels / max_col)
+    image_height = int(y_pixels / max_row)
+    rawdata_particles = rawdata_path + "/particles.txt"
+    calculate_centers(max_row, max_col, image_width, image_height, rawdata_path, rawdata_particles)
+    g_log.loginfo("execute_calculate_centers", particles_map)
+       
 def execute_preprocess(sys_params, user_params):
    
     downsampling = str(user_params.parameters.downsampling)
@@ -238,7 +347,10 @@ def main(config_file):
         exit(1)
 
     pipeline_steps = user_params.pipeline
- 
+
+    if pipeline_steps.run_calculate_centers == "yes":
+         execute_calculate_centers(sys_params, user_params)   
+        
     if pipeline_steps.run_preprocess == "yes":
         execute_preprocess(sys_params, user_params)
     

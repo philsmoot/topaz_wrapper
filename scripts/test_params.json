@@ -16,6 +16,7 @@
         "dir": "{base_project_path}/topaz/{session}/{specimen}/{run}"
     },
     "pipeline": {
+        "run_calculate_centers": "yes",
         "run_preprocess": "yes",
         "run_convert": "yes",
         "run_split_test_train": "yes",
