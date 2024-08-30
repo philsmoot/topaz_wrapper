@@ -77,7 +77,7 @@ def create_boilerplate_json(file_path: str = 'example_parameter.json'):
             base_program_path = "/hpc/projects/group.czii/krios1.processing/software/topaz_wrapper",
             base_project_path = "/hpc/projects/group.czii/krios1.processing",
             rawdata_images = "{base_project_path}/slabpick/{session}/{slabPickRun}/gallery/*.mrc",
-            rawdata_particles = "{base_project_path}/slabpick/{session}/{slabPickRun}/particles.txt"
+            rawdata_particles = "{base_project_path}/slabpick/{session}/{slabPickRun}/gallery/particles.txt"
         ),
         output=ProcessingOutput(
             file_save_model_path="{base_project_path}/topaz/{session}/{specimen}/{run}/models",
